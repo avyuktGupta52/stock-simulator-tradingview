@@ -3,24 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chart UI Replica</title>
+  <title>TradingView Static Mockup</title>
   <style>
     :root {
-      --bg: #f3f3f4;
-      --sidebar: #efefef;
-      --toolbar: #f1f1f1;
-      --panel: #f5f5f5;
-      --chart-bg: #f9f9f9;
-      --border: #d7d7d7;
-      --text: #3c3d42;
-      --muted: #8e8f94;
-      --green: #19aa76;
-      --green-soft: rgba(25,170,118,0.15);
-      --red: #ea4c52;
-      --red-soft: rgba(234,76,82,0.15);
-      --blue: #2e7dff;
-      --blue-soft: rgba(46,125,255,0.12);
-      --shadow: rgba(0,0,0,0.08);
+      --border: #dfe3e8;
+      --grid: #edf0f2;
+      --text: #3d4148;
+      --muted: #707780;
+      --green: #009879;
+      --red: #ff5266;
+      --blue: #3869f2;
     }
 
     * { box-sizing: border-box; }
@@ -28,539 +20,344 @@
     html, body {
       margin: 0;
       width: 100%;
-      height: 100%;
-      background: var(--bg);
+      min-height: 100%;
+      background: #ffffff;
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .terminal {
+      width: 100%;
+      max-width: 735px;
+      min-width: 620px;
+      height: 414px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #cfd4da;
       overflow: hidden;
-    }
-
-    .app {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      background: var(--bg);
-    }
-
-    .sidebar {
-      width: 74px;
-      background: var(--sidebar);
-      border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding-top: 8px;
-      position: relative;
     }
 
-    .hamburger {
-      width: 100%;
-      height: 46px;
+    .header {
+      height: 29px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-      color: #3d3d42;
-      font-size: 22px;
-      font-weight: 500;
-    }
-
-    .tool-group {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
       align-items: center;
       gap: 8px;
-      margin-top: 8px;
-    }
-
-    .tool {
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      color: #4a4b50;
-      opacity: 0.92;
-      position: relative;
-      cursor: default;
-    }
-
-    .tool.active {
-      border: 2px solid #ff4d4f;
-      background: rgba(255,255,255,0.55);
-      box-shadow: inset 0 0 0 1px rgba(255,77,79,0.08);
-    }
-
-    .tool svg {
-      width: 18px;
-      height: 18px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .tool.icon-pen svg {
-      width: 19px;
-      height: 19px;
-    }
-
-    .tool.icon-select svg {
-      width: 17px;
-      height: 17px;
-    }
-
-    .tool.icon-trend svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .tool.icon-eraser svg {
-      width: 17px;
-      height: 17px;
-    }
-
-    .tool.icon-magnify svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .tool.icon-box svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .tool.icon-diagonal svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .tool.icon-delete svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .tool.icon-trash svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .tool.icon-zoom svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .tool.icon-move svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .tool.icon-hand svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .spacer {
-      flex: 1;
-    }
-
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      background: var(--chart-bg);
-    }
-
-    .topbar {
-      height: 52px;
-      display: flex;
-      align-items: center;
-      padding: 0 14px 0 14px;
-      background: rgba(255,255,255,0.2);
+      padding: 0 9px;
       border-bottom: 1px solid var(--border);
-      gap: 12px;
-      position: relative;
-    }
-
-    .pair {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-right: 6px;
       white-space: nowrap;
+      overflow: hidden;
+      font-size: 11px;
     }
 
-    .pair-name {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      color: #2d2e32;
-    }
+    .instrument { font-size: 12px; color: #41464d; }
+    .instrument strong { font-weight: 400; }
+    .exchange { color: #535960; }
+    .tradingview { color: #697078; }
 
-    .pair .small {
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-left: auto;
-      margin-right: 8px;
-    }
-
-    .timeframe {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 7px;
-      border-radius: 7px;
-      color: #6d6f76;
-      border: 1px solid transparent;
-      background: transparent;
-      cursor: default;
-    }
-
-    .timeframe.active {
-      background: rgba(0,0,0,0.04);
-      color: #2f3238;
-      border-color: rgba(0,0,0,0.04);
-    }
-
-    .price-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-left: 8px;
-    }
-
-    .price-current {
-      font-size: 13px;
-      color: #1f2126;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-
-    .market-badges {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-left: 8px;
-    }
-
-    .badge {
+    .coin-icons {
       display: inline-flex;
-      align-items: center;
+      gap: 4px;
+      margin-left: 2px;
+    }
+
+    .coin {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: inline-flex;
       justify-content: center;
-      padding: 6px 11px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      min-width: 72px;
-      border: 1px solid transparent;
+      align-items: center;
+      color: white;
+      font-size: 8px;
+      font-weight: bold;
     }
 
-    .badge.buy {
-      background: rgba(25,170,118,0.10);
-      color: var(--green);
-      border-color: rgba(25,170,118,0.14);
+    .coin.euro { background: #dce5e8; color: #0b9e84; }
+    .coin.yen { background: #d4eee9; color: #0b9e84; }
+
+    .ohlc {
+      color: #169780;
+      font-size: 10px;
+      letter-spacing: .01em;
     }
 
-    .badge.sell {
-      background: rgba(234,76,82,0.10);
-      color: var(--red);
-      border-color: rgba(234,76,82,0.14);
-    }
+    .ohlc .red { color: var(--red); }
 
-    .chart-area {
-      position: relative;
+    .content {
       flex: 1;
+      position: relative;
       min-height: 0;
-      background: var(--chart-bg);
+    }
+
+    .chart {
+      position: absolute;
+      inset: 0 45px 0 0;
+      background-color: #fff;
+      background-image:
+        linear-gradient(to right, transparent calc(100% - 1px), var(--grid) calc(100% - 1px)),
+        linear-gradient(to bottom, transparent calc(100% - 1px), var(--grid) calc(100% - 1px));
+      background-size: 37px 100%, 100% 25px;
       overflow: hidden;
     }
 
-    canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      background: var(--chart-bg);
+    .chart::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(255,255,255,.28), transparent 20%);
     }
 
-    .floating-label {
+    .price-axis {
       position: absolute;
-      left: 18px;
-      top: 18px;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(0,0,0,0.04);
-      border-radius: 8px;
-      padding: 5px 8px;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 45px;
+      border-left: 1px solid var(--border);
+      background: rgba(255,255,255,.78);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3px 5px 1px 4px;
+      color: #4f555c;
+      font-size: 10px;
+      text-align: right;
+      z-index: 3;
+    }
+
+    .candles {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+
+    .candle {
+      position: absolute;
+      width: 5px;
+      border-radius: 0;
+    }
+
+    .candle::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: -9px;
+      bottom: -9px;
+      width: 1px;
+      background: currentColor;
+      opacity: .72;
+    }
+
+    .up { background: var(--green); color: var(--green); }
+    .down { background: var(--red); color: var(--red); }
+
+    .last-price {
+      position: absolute;
+      right: 4px;
+      top: 216px;
+      z-index: 4;
+      color: #59616a;
+      font-size: 10px;
+      line-height: 13px;
+      text-align: left;
+      background: rgba(255,255,255,.85);
+      padding: 1px 2px;
+    }
+
+    .last-price::before {
+      content: "";
+      position: absolute;
+      right: 28px;
+      top: 7px;
+      width: 150px;
+      border-top: 1px dotted #ff5266;
+    }
+
+    .quote-boxes {
+      position: absolute;
+      left: 9px;
+      top: 2px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+    }
+
+    .quote {
+      min-width: 47px;
+      padding: 3px 5px;
+      border: 1px solid;
+      border-radius: 3px;
+      text-align: center;
+      line-height: 12px;
+      background: white;
+    }
+
+    .quote.red { color: var(--red); border-color: var(--red); }
+    .quote.blue { color: var(--blue); border-color: var(--blue); }
+    .quote small { display: block; font-size: 8px; }
+
+    .watermark {
+      position: absolute;
+      left: 10px;
+      bottom: 6px;
+      z-index: 5;
+      width: 24px;
+      height: 24px;
+      border: 1px solid #d5dbe0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #18202b;
+      font-weight: bold;
       font-size: 11px;
-      color: #5b5d63;
-      display: none;
+      background: #fff;
+    }
+
+    .bottom {
+      height: 51px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      font-size: 10px;
+      color: #5e656d;
+    }
+
+    .months {
+      height: 26px;
+      padding: 7px 0 0 67px;
+      display: flex;
+      justify-content: space-around;
+      color: #626970;
+    }
+
+    .footer {
+      height: 25px;
+      border-top: 1px solid #e5e8eb;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 10px;
+    }
+
+    .ranges { display: flex; gap: 12px; }
+    .ranges span:first-child { color: #2e343b; }
+    .clock { margin-left: auto; }
+    .gear { font-size: 15px; color: #555d65; }
+
+    @media (max-width: 650px) {
+      .terminal { min-width: 0; height: 100vh; border: 0; }
+      .header { font-size: 9px; }
+      .ohlc, .tradingview { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="sidebar">
-      <div class="hamburger">☰</div>
+  <main class="terminal">
+    <header class="header">
+      <span class="instrument">Euro / Japanese Yen · 1D · OANDA · <span class="tradingview">TradingView</span></span>
+      <span class="coin-icons"><span class="coin euro">€</span><span class="coin yen">¥</span></span>
+      <span class="ohlc">O136.126 H136.697 L135.640 C136.681 <span class="red">+0.554 (+0.41%)</span></span>
+    </header>
 
-      <div class="tool-group">
-        <div class="tool active icon-pen" title="Select">
-          <svg viewBox="0 0 24 24"><path d="M4 20l5.5-1.5L19.5 8.5a2.1 2.1 0 0 0-3-3L6.5 15.5 5 20z"/><path d="M13.5 7.5l3 3"/></svg>
-        </div>
-        <div class="tool icon-select" title="Move">
-          <svg viewBox="0 0 24 24"><path d="M6 18l4.7-12.5 2.7 7.5 7.6 2.5L6 18z"/></svg>
-        </div>
-        <div class="tool icon-trend" title="Trend line">
-          <svg viewBox="0 0 24 24"><path d="M3 17l6-6 5 5 8-10"/></svg>
-        </div>
-        <div class="tool icon-eraser" title="Eraser">
-          <svg viewBox="0 0 24 24"><path d="M7 15l7-7 5 5-7 7H7z"/><path d="M15 20H7l-3-3 8-8"/></svg>
-        </div>
-        <div class="tool icon-magnify" title="Magnify">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="5.5"/><path d="M16 16l5 5"/></svg>
-        </div>
-        <div class="tool icon-box" title="Rectangle">
-          <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5"/></svg>
-        </div>
-        <div class="tool icon-diagonal" title="Text">
-          <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M7 17l10-10"/></svg>
-        </div>
-        <div class="tool icon-delete" title="Delete">
-          <svg viewBox="0 0 24 24"><path d="M6 7h12"/><path d="M9 7V5h6v2"/><path d="M8 7l1 12h6l1-12"/></svg>
-        </div>
-        <div class="tool icon-trash" title="Trash">
-          <svg viewBox="0 0 24 24"><path d="M7 7h10v12H7z"/><path d="M4 7h16"/><path d="M10 7V4h4v3"/></svg>
-        </div>
+    <section class="content">
+      <div class="quote-boxes">
+        <span class="quote red">136.669<small>SELL</small></span>
+        <span>2.1</span>
+        <span class="quote blue">136.690<small>BUY</small></span>
       </div>
 
-      <div class="spacer"></div>
-
-      <div class="tool-group bottom-tools">
-        <div class="tool icon-hand" title="Hand">
-          <svg viewBox="0 0 24 24"><path d="M8 11V7.5a1.5 1.5 0 0 1 3 0V11"/><path d="M11 11V5.5A1.5 1.5 0 0 1 14.5 5v6"/><path d="M14.5 11V7.5a1.5 1.5 0 0 1 3 0V11"/><path d="M8 11v5.5a3.5 3.5 0 0 0 3.5 3.5H12a3.5 3.5 0 0 0 3.5-3.5V11"/></svg>
+      <div class="chart">
+        <div class="candles" aria-hidden="true">
+          <i class="candle up" style="left:1%;top:155px;height:27px"></i>
+          <i class="candle down" style="left:3%;top:163px;height:20px"></i>
+          <i class="candle down" style="left:4.5%;top:160px;height:53px"></i>
+          <i class="candle up" style="left:6%;top:203px;height:43px"></i>
+          <i class="candle down" style="left:7.5%;top:195px;height:30px"></i>
+          <i class="candle down" style="left:9%;top:199px;height:55px"></i>
+          <i class="candle up" style="left:10.5%;top:248px;height:33px"></i>
+          <i class="candle up" style="left:12%;top:236px;height:25px"></i>
+          <i class="candle down" style="left:13.5%;top:243px;height:29px"></i>
+          <i class="candle up" style="left:15%;top:226px;height:20px"></i>
+          <i class="candle down" style="left:16.5%;top:225px;height:18px"></i>
+          <i class="candle up" style="left:18%;top:220px;height:20px"></i>
+          <i class="candle up" style="left:19.5%;top:212px;height:25px"></i>
+          <i class="candle down" style="left:21%;top:220px;height:18px"></i>
+          <i class="candle down" style="left:22.5%;top:215px;height:47px"></i>
+          <i class="candle down" style="left:24%;top:258px;height:69px"></i>
+          <i class="candle up" style="left:25.5%;top:286px;height:24px"></i>
+          <i class="candle up" style="left:27%;top:260px;height:35px"></i>
+          <i class="candle down" style="left:28.5%;top:259px;height:30px"></i>
+          <i class="candle up" style="left:30%;top:270px;height:28px"></i>
+          <i class="candle up" style="left:31.5%;top:248px;height:37px"></i>
+          <i class="candle down" style="left:33%;top:239px;height:27px"></i>
+          <i class="candle up" style="left:34.5%;top:226px;height:34px"></i>
+          <i class="candle up" style="left:36%;top:204px;height:38px"></i>
+          <i class="candle up" style="left:37.5%;top:178px;height:35px"></i>
+          <i class="candle up" style="left:39%;top:144px;height:42px"></i>
+          <i class="candle up" style="left:40.5%;top:115px;height:37px"></i>
+          <i class="candle up" style="left:42%;top:83px;height:38px"></i>
+          <i class="candle up" style="left:43.5%;top:50px;height:41px"></i>
+          <i class="candle down" style="left:45%;top:41px;height:45px"></i>
+          <i class="candle down" style="left:46.5%;top:77px;height:43px"></i>
+          <i class="candle down" style="left:48%;top:104px;height:47px"></i>
+          <i class="candle down" style="left:49.5%;top:113px;height:43px"></i>
+          <i class="candle up" style="left:51%;top:128px;height:22px"></i>
+          <i class="candle down" style="left:52.5%;top:112px;height:42px"></i>
+          <i class="candle down" style="left:54%;top:82px;height:35px"></i>
+          <i class="candle up" style="left:55.5%;top:49px;height:41px"></i>
+          <i class="candle up" style="left:57%;top:40px;height:40px"></i>
+          <i class="candle down" style="left:58.5%;top:45px;height:40px"></i>
+          <i class="candle down" style="left:60%;top:62px;height:35px"></i>
+          <i class="candle down" style="left:61.5%;top:65px;height:24px"></i>
+          <i class="candle down" style="left:63%;top:74px;height:38px"></i>
+          <i class="candle down" style="left:64.5%;top:90px;height:42px"></i>
+          <i class="candle down" style="left:66%;top:112px;height:37px"></i>
+          <i class="candle down" style="left:67.5%;top:135px;height:44px"></i>
+          <i class="candle down" style="left:69%;top:155px;height:29px"></i>
+          <i class="candle up" style="left:70.5%;top:168px;height:20px"></i>
+          <i class="candle up" style="left:72%;top:160px;height:28px"></i>
+          <i class="candle up" style="left:73.5%;top:145px;height:27px"></i>
+          <i class="candle up" style="left:75%;top:126px;height:31px"></i>
+          <i class="candle up" style="left:76.5%;top:111px;height:27px"></i>
+          <i class="candle up" style="left:78%;top:94px;height:28px"></i>
+          <i class="candle down" style="left:79.5%;top:104px;height:35px"></i>
+          <i class="candle down" style="left:81%;top:128px;height:32px"></i>
+          <i class="candle down" style="left:82.5%;top:143px;height:42px"></i>
+          <i class="candle down" style="left:84%;top:166px;height:42px"></i>
+          <i class="candle down" style="left:85.5%;top:194px;height:30px"></i>
+          <i class="candle down" style="left:87%;top:210px;height:40px"></i>
+          <i class="candle down" style="left:88.5%;top:234px;height:39px"></i>
+          <i class="candle up" style="left:90%;top:247px;height:27px"></i>
+          <i class="candle up" style="left:91.5%;top:233px;height:30px"></i>
+          <i class="candle down" style="left:93%;top:221px;height:37px"></i>
+          <i class="candle up" style="left:94.5%;top:215px;height:30px"></i>
         </div>
+
+        <div class="last-price">136.681<br><span>12:19:05</span></div>
+        <div class="watermark">TV</div>
       </div>
-    </div>
 
-    <div class="main">
-      <div class="topbar">
-        <div class="pair">
-          <span class="pair-name">BTCUSDT</span>
-          <span class="small">+</span>
-        </div>
+      <aside class="price-axis">
+        <span>145.000</span><span>144.000</span><span>143.000</span><span>142.000</span><span>141.000</span><span>140.000</span><span>139.000</span><span>138.000</span><span>137.000</span><span>136.000</span><span>135.000</span><span>134.000</span><span>133.000</span><span>132.000</span>
+      </aside>
+    </section>
 
-        <div class="price-row">
-          <div class="price-current">108,005.49</div>
-          <div class="price-current" style="color: var(--red); font-size: 12px; margin-left: 4px;">0.01</div>
-        </div>
-
-        <div class="market-badges">
-          <span class="badge sell">SELL</span>
-          <span class="badge buy">BUY</span>
-        </div>
-
-        <div class="top-actions">
-          <div class="timeframe">5m</div>
-          <div class="timeframe">30m</div>
-          <div class="timeframe active">1h</div>
-          <div class="timeframe">4h</div>
-          <div class="timeframe">D</div>
-          <div class="timeframe">W</div>
-        </div>
+    <footer class="bottom">
+      <div class="months"><span>May</span><span>16</span><span>Jun</span><span>13</span><span>Jul</span><span>18</span><span>Aug</span><span>15</span><span>⚙</span></div>
+      <div class="footer">
+        <div class="ranges"><span>1D</span><span>5D</span><span>1M</span><span>3M</span><span>6M</span><span>YTD</span><span>1Y</span><span>5Y</span><span>All</span></div>
+        <span>⇄</span>
+        <span class="clock">08:40:55 (UTC)</span>
+        <span>%</span><span>log</span><span style="color:#1785d1">auto</span>
       </div>
-
-      <div class="chart-area">
-        <canvas id="chartCanvas"></canvas>
-        <div class="floating-label">Live</div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const canvas = document.getElementById('chartCanvas');
-    const ctx = canvas.getContext('2d');
-
-    let chartData = [];
-    let currentPrice = 108005.49;
-    let candleStart = Date.now();
-    let currentCandle = null;
-
-    function resizeCanvas() {
-      const rect = canvas.parentElement.getBoundingClientRect();
-      canvas.width = rect.width * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
-      ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-    }
-
-    function clamp(value, min, max) {
-      return Math.min(max, Math.max(min, value));
-    }
-
-    function getCandleDuration() {
-      return 60 * 60 * 1000;
-    }
-
-    function createCandle(open, close, high, low, volume, start) {
-      return { open, close, high, low, volume, start, end: start + getCandleDuration() };
-    }
-
-    function seedCandles() {
-      const candles = [];
-      let prev = 108005.49;
-      for (let i = 80; i >= 0; i--) {
-        const start = Date.now() - i * getCandleDuration();
-        const drift = (Math.random() - 0.48) * 140;
-        const open = prev;
-        const close = clamp(open + drift, 106800, 109600);
-        const high = Math.max(open, close) + Math.random() * 180;
-        const low = Math.min(open, close) - Math.random() * 180;
-        const vol = 800 + Math.random() * 1800;
-        candles.push(createCandle(open, close, high, low, vol, start));
-        prev = close;
-      }
-      return candles;
-    }
-
-    function setCurrentCandle() {
-      const price = currentPrice;
-      currentCandle = createCandle(price, price, price, price, 0, Date.now());
-    }
-
-    function finalizeCandle() {
-      if (!currentCandle) return;
-      const c = {
-        ...currentCandle,
-        close: currentPrice,
-        high: Math.max(currentCandle.high, currentPrice),
-        low: Math.min(currentCandle.low, currentPrice),
-      };
-      chartData.push(c);
-      setCurrentCandle();
-    }
-
-    function randomWalk() {
-      const tick = (Math.random() - 0.5) * 30;
-      const trend = Math.sin(Date.now() / 8000) * 6;
-      currentPrice += tick + trend;
-      currentPrice = clamp(currentPrice, 106000, 109500);
-
-      if (!currentCandle) setCurrentCandle();
-      currentCandle.close = currentPrice;
-      currentCandle.high = Math.max(currentCandle.high, currentPrice);
-      currentCandle.low = Math.min(currentCandle.low, currentPrice);
-      currentCandle.volume += 10 + Math.random() * 30;
-
-      if (Date.now() - currentCandle.start >= getCandleDuration()) finalizeCandle();
-    }
-
-    function drawCandle(candle, x, yScale, w, up) {
-      const openY = yScale(candle.open);
-      const closeY = yScale(candle.close);
-      const highY = yScale(candle.high);
-      const lowY = yScale(candle.low);
-
-      ctx.beginPath();
-      ctx.moveTo(x, highY);
-      ctx.lineTo(x, lowY);
-      ctx.strokeStyle = up ? '#1ba978' : '#ea4c52';
-      ctx.lineWidth = 1.1;
-      ctx.stroke();
-
-      const top = Math.min(openY, closeY);
-      const bodyH = Math.max(3, Math.abs(closeY - openY));
-      ctx.fillStyle = up ? '#1ba978' : '#ea4c52';
-      ctx.fillRect(x - w / 2, top, w, bodyH);
-    }
-
-    function drawGridAndCandles() {
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = '#f9f9f9';
-      ctx.fillRect(0, 0, width, height);
-
-      const allCandles = [...chartData, ...(currentCandle ? [currentCandle] : [])];
-      if (!allCandles.length) return;
-
-      let min = Infinity;
-      let max = -Infinity;
-      allCandles.forEach(c => {
-        min = Math.min(min, c.low);
-        max = Math.max(max, c.high);
-      });
-
-      const pad = (max - min) * 0.16 || 20;
-      min -= pad;
-      max += pad;
-
-      const yScale = (v) => {
-        const range = max - min || 1;
-        return height - 16 - ((v - min) / range) * (height - 24);
-      };
-
-      const left = 20;
-      const right = 10;
-      const candleCount = Math.max(40, allCandles.length);
-      const candleWidth = 5.8;
-
-      ctx.strokeStyle = 'rgba(0,0,0,0.08)';
-      ctx.lineWidth = 1;
-      for (let i = 0; i <= 7; i++) {
-        const y = 8 + (i * (height - 24)) / 7;
-        ctx.beginPath();
-        ctx.moveTo(left, y);
-        ctx.lineTo(width - right, y);
-        ctx.stroke();
-      }
-
-      for (let i = 0; i <= 15; i++) {
-        const x = left + (i * (width - left - right)) / 15;
-        ctx.beginPath();
-        ctx.moveTo(x, 8);
-        ctx.lineTo(x, height - 10);
-        ctx.stroke();
-      }
-
-      const lastX = width - 20;
-      let xPos = lastX;
-      for (let i = allCandles.length - 1; i >= 0; i--) {
-        const candle = allCandles[i];
-        const up = candle.close >= candle.open;
-        drawCandle(candle, xPos, yScale, candleWidth, up);
-        xPos -= 8;
-      }
-    }
-
-    function animate() {
-      randomWalk();
-      drawGridAndCandles();
-      requestAnimationFrame(animate);
-    }
-
-    function init() {
-      chartData = seedCandles();
-      setCurrentCandle();
-      resizeCanvas();
-      window.addEventListener('resize', resizeCanvas);
-      animate();
-    }
-
-    init();
-  </script>
+    </footer>
+  </main>
 </body>
 </html>
