@@ -3,179 +3,292 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TradingView Style Stock Simulator</title>
+  <title>Chart UI Replica</title>
   <style>
     :root {
-      --bg: #0b1220;
-      --panel: #101b2d;
-      --panel-2: #0f1b2d;
-      --grid: rgba(255,255,255,0.08);
-      --grid-soft: rgba(255,255,255,0.04);
-      --text: #eaf2ff;
-      --muted: #8fa7c7;
-      --price-up: #22c55e;
-      --price-down: #ef4444;
-      --price-neutral: #60a5fa;
-      --axis: #e2e8f0;
-      --gold: #fbbf24;
-      --chart-bg: #0a1220;
-      --panel-border: rgba(148,163,184,0.15);
-      --shadow: 0 13px 30px rgba(0,0,0,0.35);
+      --bg: #f3f3f4;
+      --sidebar: #efefef;
+      --toolbar: #f1f1f1;
+      --panel: #f5f5f5;
+      --chart-bg: #f9f9f9;
+      --border: #d7d7d7;
+      --text: #3c3d42;
+      --muted: #8e8f94;
+      --green: #19aa76;
+      --green-soft: rgba(25,170,118,0.15);
+      --red: #ea4c52;
+      --red-soft: rgba(234,76,82,0.15);
+      --blue: #2e7dff;
+      --blue-soft: rgba(46,125,255,0.12);
+      --shadow: rgba(0,0,0,0.08);
     }
 
     * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
+      width: 100%;
       height: 100%;
-      background: linear-gradient(180deg, #07111d 0%, #0a1220 100%);
+      background: var(--bg);
       color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 18px;
+      overflow: hidden;
     }
 
     .app {
-      width: min(1400px, 100%);
-      background: rgba(8, 14, 22, 0.9);
-      border: 1px solid var(--panel-border);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      background: var(--bg);
+    }
+
+    .sidebar {
+      width: 74px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      height: 90vh;
+      align-items: center;
+      padding-top: 8px;
+      position: relative;
+    }
+
+    .hamburger {
+      width: 100%;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      color: #3d3d42;
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .tool-group {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .tool {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      color: #4a4b50;
+      opacity: 0.92;
+      position: relative;
+      cursor: default;
+    }
+
+    .tool.active {
+      border: 2px solid #ff4d4f;
+      background: rgba(255,255,255,0.55);
+      box-shadow: inset 0 0 0 1px rgba(255,77,79,0.08);
+    }
+
+    .tool svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tool.icon-pen svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .tool.icon-select svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .tool.icon-trend svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tool.icon-eraser svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .tool.icon-magnify svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tool.icon-box svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tool.icon-diagonal svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tool.icon-delete svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tool.icon-trash svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tool.icon-zoom svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tool.icon-move svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tool.icon-hand svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--chart-bg);
     }
 
     .topbar {
+      height: 52px;
       display: flex;
       align-items: center;
-      gap: 18px;
-      padding: 14px 18px;
-      background: linear-gradient(180deg, rgba(16,27,45,0.96), rgba(12,21,34,0.96));
-      border-bottom: 1px solid var(--panel-border);
-      flex-wrap: wrap;
-      flex-shrink: 0;
-    }
-
-    .symbol {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      min-width: 140px;
-    }
-
-    .symbol-badge {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--price-up), #1f9d62);
-      box-shadow: 0 0 14px rgba(34,197,94,0.7);
-    }
-
-    .price-box {
-      min-width: 190px;
-    }
-
-    .price-line {
-      font-size: clamp(1.4rem, 2vw, 2.1rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-    }
-
-    .delta-line {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-top: 3px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .positive { color: var(--price-up); }
-    .negative { color: var(--price-down); }
-    .neutral  { color: var(--price-neutral); }
-
-    .timeframes {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-left: auto;
-      flex-wrap: wrap;
-    }
-
-    .tf-btn {
-      appearance: none;
-      border: 1px solid rgba(148,163,184,0.18);
-      background: rgba(255,255,255,0.02);
-      color: var(--muted);
-      padding: 8px 10px;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.15s ease;
-    }
-
-    .tf-btn:hover {
-      border-color: rgba(148,163,184,0.35);
-      color: var(--text);
-    }
-
-    .tf-btn.active {
-      background: rgba(96,165,250,0.12);
-      color: var(--text);
-      border-color: rgba(96,165,250,0.38);
-      box-shadow: inset 0 0 0 1px rgba(96,165,250,0.18);
-    }
-
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-left: 10px;
-      flex-wrap: wrap;
-    }
-
-    .button {
-      appearance: none;
-      border: 1px solid rgba(148,163,184,0.18);
-      background: rgba(255,255,255,0.02);
-      color: var(--text);
-      padding: 9px 12px;
-      border-radius: 9px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: 0.15s ease;
-    }
-
-    .button:hover {
-      border-color: rgba(148,163,184,0.35);
-      background: rgba(255,255,255,0.04);
-    }
-
-    .button.primary {
-      background: linear-gradient(180deg, rgba(34,197,94,0.18), rgba(34,197,94,0.08));
-      border-color: rgba(34,197,94,0.38);
-      color: #d9ffe8;
-    }
-
-    .chart-wrap {
+      padding: 0 14px 0 14px;
+      background: rgba(255,255,255,0.2);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
       position: relative;
-      width: 100%;
+    }
+
+    .pair {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+
+    .pair-name {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: #2d2e32;
+    }
+
+    .pair .small {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+      margin-right: 8px;
+    }
+
+    .timeframe {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 7px;
+      border-radius: 7px;
+      color: #6d6f76;
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: default;
+    }
+
+    .timeframe.active {
+      background: rgba(0,0,0,0.04);
+      color: #2f3238;
+      border-color: rgba(0,0,0,0.04);
+    }
+
+    .price-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: 8px;
+    }
+
+    .price-current {
+      font-size: 13px;
+      color: #1f2126;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .market-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      min-width: 72px;
+      border: 1px solid transparent;
+    }
+
+    .badge.buy {
+      background: rgba(25,170,118,0.10);
+      color: var(--green);
+      border-color: rgba(25,170,118,0.14);
+    }
+
+    .badge.sell {
+      background: rgba(234,76,82,0.10);
+      color: var(--red);
+      border-color: rgba(234,76,82,0.14);
+    }
+
+    .chart-area {
+      position: relative;
       flex: 1;
-      background:
-        linear-gradient(180deg, rgba(10,18,32,0.92), rgba(10,18,32,0.96)),
-        var(--chart-bg);
-      border-bottom: 1px solid var(--panel-border);
+      min-height: 0;
+      background: var(--chart-bg);
       overflow: hidden;
     }
 
@@ -183,690 +296,268 @@
       width: 100%;
       height: 100%;
       display: block;
-      cursor: crosshair;
+      background: var(--chart-bg);
     }
 
-    .hud {
+    .floating-label {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      pointer-events: none;
-      padding: 16px 18px 0 18px;
-      z-index: 2;
-    }
-
-    .left-pills, .right-pills {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      pointer-events: none;
-    }
-
-    .pill {
-      background: rgba(11,18,32,0.56);
-      border: 1px solid rgba(148,163,184,0.12);
+      left: 18px;
+      top: 18px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(0,0,0,0.04);
       border-radius: 8px;
-      padding: 7px 9px;
+      padding: 5px 8px;
       font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .pill strong {
-      color: var(--text);
-      font-size: 12px;
-      letter-spacing: 0;
-      margin-left: 4px;
-    }
-
-    .bottom {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 10px;
-      padding: 14px 18px 18px;
-      background: rgba(10, 18, 32, 0.95);
-      border-top: 1px solid var(--panel-border);
-      flex-shrink: 0;
-    }
-
-    .stat {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(148,163,184,0.12);
-      border-radius: 10px;
-      padding: 10px 12px;
-      min-height: 68px;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .stat-value {
-      font-weight: 800;
-      font-size: 1.05rem;
-      letter-spacing: -0.03em;
-    }
-
-    @media (max-width: 900px) {
-      .bottom {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+      color: #5b5d63;
+      display: none;
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <div class="topbar">
-      <div class="symbol">
-        <span class="symbol-badge"></span>
-        <span>NVDA</span>
-      </div>
+    <div class="sidebar">
+      <div class="hamburger">☰</div>
 
-      <div class="price-box">
-        <div id="priceLine" class="price-line">$0.00</div>
-        <div id="deltaLine" class="delta-line">
-          <span class="neutral">0.00 (0.00%)</span>
+      <div class="tool-group">
+        <div class="tool active icon-pen" title="Select">
+          <svg viewBox="0 0 24 24"><path d="M4 20l5.5-1.5L19.5 8.5a2.1 2.1 0 0 0-3-3L6.5 15.5 5 20z"/><path d="M13.5 7.5l3 3"/></svg>
+        </div>
+        <div class="tool icon-select" title="Move">
+          <svg viewBox="0 0 24 24"><path d="M6 18l4.7-12.5 2.7 7.5 7.6 2.5L6 18z"/></svg>
+        </div>
+        <div class="tool icon-trend" title="Trend line">
+          <svg viewBox="0 0 24 24"><path d="M3 17l6-6 5 5 8-10"/></svg>
+        </div>
+        <div class="tool icon-eraser" title="Eraser">
+          <svg viewBox="0 0 24 24"><path d="M7 15l7-7 5 5-7 7H7z"/><path d="M15 20H7l-3-3 8-8"/></svg>
+        </div>
+        <div class="tool icon-magnify" title="Magnify">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="5.5"/><path d="M16 16l5 5"/></svg>
+        </div>
+        <div class="tool icon-box" title="Rectangle">
+          <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5"/></svg>
+        </div>
+        <div class="tool icon-diagonal" title="Text">
+          <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M7 17l10-10"/></svg>
+        </div>
+        <div class="tool icon-delete" title="Delete">
+          <svg viewBox="0 0 24 24"><path d="M6 7h12"/><path d="M9 7V5h6v2"/><path d="M8 7l1 12h6l1-12"/></svg>
+        </div>
+        <div class="tool icon-trash" title="Trash">
+          <svg viewBox="0 0 24 24"><path d="M7 7h10v12H7z"/><path d="M4 7h16"/><path d="M10 7V4h4v3"/></svg>
         </div>
       </div>
 
-      <div class="timeframes">
-        <button class="tf-btn" data-tf="1m">1m</button>
-        <button class="tf-btn active" data-tf="5m">5m</button>
-        <button class="tf-btn" data-tf="15m">15m</button>
-        <button class="tf-btn" data-tf="1h">1H</button>
-        <button class="tf-btn" data-tf="4h">4H</button>
-        <button class="tf-btn" data-tf="1d">1D</button>
-      </div>
+      <div class="spacer"></div>
 
-      <div class="controls">
-        <button id="pauseBtn" class="button primary">Pause</button>
-        <button id="annotateBtn" class="button">Annotate</button>
-        <button id="resetBtn" class="button">Reset View</button>
+      <div class="tool-group bottom-tools">
+        <div class="tool icon-hand" title="Hand">
+          <svg viewBox="0 0 24 24"><path d="M8 11V7.5a1.5 1.5 0 0 1 3 0V11"/><path d="M11 11V5.5A1.5 1.5 0 0 1 14.5 5v6"/><path d="M14.5 11V7.5a1.5 1.5 0 0 1 3 0V11"/><path d="M8 11v5.5a3.5 3.5 0 0 0 3.5 3.5H12a3.5 3.5 0 0 0 3.5-3.5V11"/></svg>
+        </div>
       </div>
     </div>
 
-    <div class="chart-wrap">
-      <div class="hud">
-        <div class="left-pills">
-          <div class="pill">Market <strong id="marketState">Neutral</strong></div>
-          <div class="pill">Vol <strong id="volatilityValue">0.00%</strong></div>
+    <div class="main">
+      <div class="topbar">
+        <div class="pair">
+          <span class="pair-name">BTCUSDT</span>
+          <span class="small">+</span>
         </div>
-        <div class="right-pills">
-          <div class="pill">Time Left <strong id="timeLeft">00:00</strong></div>
-          <div class="pill">TF <strong id="timeframeValue">5m</strong></div>
+
+        <div class="price-row">
+          <div class="price-current">108,005.49</div>
+          <div class="price-current" style="color: var(--red); font-size: 12px; margin-left: 4px;">0.01</div>
+        </div>
+
+        <div class="market-badges">
+          <span class="badge sell">SELL</span>
+          <span class="badge buy">BUY</span>
+        </div>
+
+        <div class="top-actions">
+          <div class="timeframe">5m</div>
+          <div class="timeframe">30m</div>
+          <div class="timeframe active">1h</div>
+          <div class="timeframe">4h</div>
+          <div class="timeframe">D</div>
+          <div class="timeframe">W</div>
         </div>
       </div>
 
-      <canvas id="chartCanvas"></canvas>
-    </div>
-
-    <div class="bottom">
-      <div class="stat">
-        <div class="stat-label">Open</div>
-        <div id="statOpen" class="stat-value">$0.00</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">High</div>
-        <div id="statHigh" class="stat-value">$0.00</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Low</div>
-        <div id="statLow" class="stat-value">$0.00</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Close</div>
-        <div id="statClose" class="stat-value">$0.00</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Volume</div>
-        <div id="statVolume" class="stat-value">0</div>
+      <div class="chart-area">
+        <canvas id="chartCanvas"></canvas>
+        <div class="floating-label">Live</div>
       </div>
     </div>
   </div>
 
   <script>
-    const canvas = document.getElementById("chartCanvas");
-    const ctx = canvas.getContext("2d");
+    const canvas = document.getElementById('chartCanvas');
+    const ctx = canvas.getContext('2d');
 
-    const priceLine = document.getElementById("priceLine");
-    const deltaLine = document.getElementById("deltaLine");
-    const marketStateEl = document.getElementById("marketState");
-    const volatilityValueEl = document.getElementById("volatilityValue");
-    const timeLeftEl = document.getElementById("timeLeft");
-    const timeframeValueEl = document.getElementById("timeframeValue");
+    let chartData = [];
+    let currentPrice = 108005.49;
+    let candleStart = Date.now();
+    let currentCandle = null;
 
-    const statOpen = document.getElementById("statOpen");
-    const statHigh = document.getElementById("statHigh");
-    const statLow = document.getElementById("statLow");
-    const statClose = document.getElementById("statClose");
-    const statVolume = document.getElementById("statVolume");
-
-    const intervalMap = {
-      "1m": 60000,
-      "5m": 300000,
-      "15m": 900000,
-      "1h": 3600000,
-      "4h": 14400000,
-      "1d": 86400000
-    };
-
-    const state = {
-      timeframe: "5m",
-      playing: true,
-      annotationMode: false,
-      lastTick: performance.now(),
-      currentPrice: 176.20,
-      referencePrice: 176.20,
-      lastPrice: 176.20,
-      history: [],
-      currentCandle: null,
-      annotations: [],
-      lastCandleClosed: null,
-      lastTradeTime: Date.now(),
-      
-      // Chart pan/zoom
-      panX: 0,
-      panY: 0,
-      isDragging: false,
-      dragStartX: 0,
-      dragStartY: 0,
-      startPanX: 0,
-      startPanY: 0,
-      zoom: 1.0,
-      
-      // Chart display
-      candleWidth: 18,
-      spaceBetweenCandles: 2,
-      padding: { left: 60, right: 20, top: 40, bottom: 50 }
-    };
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+    }
 
     function clamp(value, min, max) {
       return Math.min(max, Math.max(min, value));
     }
 
-    function formatPrice(v) {
-      return "$" + Number(v).toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-    }
-
-    function formatTime(ms) {
-      const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
-      const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
-      const seconds = String(totalSeconds % 60).padStart(2, "0");
-      return `${minutes}:${seconds}`;
-    }
-
     function getCandleDuration() {
-      return intervalMap[state.timeframe];
+      return 60 * 60 * 1000;
     }
 
-    function makeCandle(open, close, high, low, volume, startTime) {
-      return {
-        open,
-        close,
-        high,
-        low,
-        volume,
-        startTime,
-        endTime: startTime + getCandleDuration()
-      };
+    function createCandle(open, close, high, low, volume, start) {
+      return { open, close, high, low, volume, start, end: start + getCandleDuration() };
     }
 
-    function generateSeedHistory(count = 200) {
-      const duration = getCandleDuration();
-      let prevClose = 176.2;
-      const arr = [];
-
-      for (let i = count; i >= 1; i--) {
-        const time = Date.now() - i * duration;
-
-        const drift = Math.sin(i / 16) * 0.75 + Math.cos(i / 11) * 0.45;
-        const volatility = 0.65 + ((i % 13) / 13) * 1.8;
-        const open = prevClose;
-        const close = open + drift * 0.95 + (Math.random() - 0.5) * volatility;
-        const range = Math.max(0.45, Math.abs(close - open) * 1.6 + volatility * 0.5);
-        const high = Math.max(open, close) + Math.random() * range;
-        const low = Math.min(open, close) - Math.random() * range;
-        const volume = 1800 + Math.random() * 2600 + Math.abs(close - open) * 1200;
-
-        arr.push(makeCandle(open, close, high, low, volume, time));
-        prevClose = close;
+    function seedCandles() {
+      const candles = [];
+      let prev = 108005.49;
+      for (let i = 80; i >= 0; i--) {
+        const start = Date.now() - i * getCandleDuration();
+        const drift = (Math.random() - 0.48) * 140;
+        const open = prev;
+        const close = clamp(open + drift, 106800, 109600);
+        const high = Math.max(open, close) + Math.random() * 180;
+        const low = Math.min(open, close) - Math.random() * 180;
+        const vol = 800 + Math.random() * 1800;
+        candles.push(createCandle(open, close, high, low, vol, start));
+        prev = close;
       }
-
-      return arr;
+      return candles;
     }
 
-    function createNewCandleFromPrice(price) {
-      return {
-        open: price,
-        close: price,
-        high: price,
-        low: price,
-        volume: 0,
-        startTime: Date.now(),
-        endTime: Date.now() + getCandleDuration()
+    function setCurrentCandle() {
+      const price = currentPrice;
+      currentCandle = createCandle(price, price, price, price, 0, Date.now());
+    }
+
+    function finalizeCandle() {
+      if (!currentCandle) return;
+      const c = {
+        ...currentCandle,
+        close: currentPrice,
+        high: Math.max(currentCandle.high, currentPrice),
+        low: Math.min(currentCandle.low, currentPrice),
       };
+      chartData.push(c);
+      setCurrentCandle();
     }
 
-    function calculateMarketState() {
-      const trend = state.currentPrice - state.referencePrice;
-      const absTrend = Math.abs(trend);
-      if (trend > 0.65) return "Bullish";
-      if (trend < -0.65) return "Bearish";
-      if (absTrend > 0.2) return "Neutral";
-      return "Balanced";
+    function randomWalk() {
+      const tick = (Math.random() - 0.5) * 30;
+      const trend = Math.sin(Date.now() / 8000) * 6;
+      currentPrice += tick + trend;
+      currentPrice = clamp(currentPrice, 106000, 109500);
+
+      if (!currentCandle) setCurrentCandle();
+      currentCandle.close = currentPrice;
+      currentCandle.high = Math.max(currentCandle.high, currentPrice);
+      currentCandle.low = Math.min(currentCandle.low, currentPrice);
+      currentCandle.volume += 10 + Math.random() * 30;
+
+      if (Date.now() - currentCandle.start >= getCandleDuration()) finalizeCandle();
     }
 
-    function computeVolumeVolatility() {
-      const recent = state.history.slice(-25);
-      if (!recent.length) return 0;
-      const closes = recent.map(c => c.close);
-      const avg = closes.reduce((a, b) => a + b, 0) / closes.length;
-      let variance = 0;
-      closes.forEach(v => variance += (v - avg) ** 2);
-      variance /= closes.length;
-      return Math.sqrt(variance) / avg * 100;
-    }
+    function drawCandle(candle, x, yScale, w, up) {
+      const openY = yScale(candle.open);
+      const closeY = yScale(candle.close);
+      const highY = yScale(candle.high);
+      const lowY = yScale(candle.low);
 
-    function finalizeCurrentCandle() {
-      if (!state.currentCandle) return;
-
-      const candle = {
-        ...state.currentCandle,
-        close: state.currentPrice,
-        high: Math.max(state.currentCandle.high, state.currentPrice),
-        low: Math.min(state.currentCandle.low, state.currentPrice),
-        endTime: Date.now()
-      };
-
-      state.history.push(candle);
-      state.lastCandleClosed = candle;
-      state.currentCandle = createNewCandleFromPrice(state.currentPrice);
-      state.lastTradeTime = Date.now();
-    }
-
-    function resetChartForTimeframe() {
-      const duration = getCandleDuration();
-      state.history = generateSeedHistory(200);
-
-      const lastClose = state.history[state.history.length - 1].close;
-      state.currentPrice = lastClose;
-      state.referencePrice = lastClose;
-      state.lastPrice = lastClose;
-      state.currentCandle = createNewCandleFromPrice(lastClose);
-      state.annotations = [];
-      state.lastCandleClosed = state.history[state.history.length - 1];
-      
-      // Reset pan/zoom to show latest candles
-      state.panX = 0;
-      state.panY = 0;
-      state.zoom = 1.0;
-    }
-
-    function tickMarket(deltaMs) {
-      if (!state.playing) return;
-
-      const duration = getCandleDuration();
-      const lastClose = state.history.length ? state.history[state.history.length - 1].close : state.currentPrice;
-      const lastLivePrice = state.currentPrice || lastClose;
-
-      // Realistic synthetic market algorithm
-      const recent = state.history.slice(-20);
-      const avgRecent = recent.reduce((sum, c) => sum + c.close, 0) / recent.length;
-      const momentum = (lastClose - avgRecent) * 0.06;
-      const meanReversion = (avgRecent - lastLivePrice) * 0.024;
-      const cycle = Math.sin(Date.now() / 21000) * 0.42;
-      const liquidityShock = (Math.random() - 0.5) * 0.7;
-      const volatilityRegime = 0.35 + computeVolumeVolatility() * 0.12;
-      const impulse = (momentum + meanReversion + cycle + liquidityShock) * (deltaMs / 1000) * volatilityRegime;
-
-      state.currentPrice = clamp(lastLivePrice + impulse, 120, 260);
-
-      if (!state.currentCandle) {
-        state.currentCandle = createNewCandleFromPrice(lastLivePrice);
-      }
-
-      state.currentCandle.close = state.currentPrice;
-      state.currentCandle.high = Math.max(state.currentCandle.high, state.currentPrice);
-      state.currentCandle.low = Math.min(state.currentCandle.low, state.currentPrice);
-      state.currentCandle.volume += 10 + Math.random() * 35;
-
-      const elapsed = Date.now() - state.currentCandle.startTime;
-      if (elapsed >= duration) {
-        finalizeCurrentCandle();
-      }
-
-      state.lastPrice = state.currentPrice;
-      state.referencePrice = state.history[state.history.length - 1]?.close ?? state.currentPrice;
-    }
-
-    function renderHud() {
-      const prevClose = state.history[state.history.length - 1]?.close ?? state.currentPrice;
-      const delta = state.currentPrice - prevClose;
-      const pct = prevClose ? (delta / prevClose) * 100 : 0;
-
-      priceLine.textContent = formatPrice(state.currentPrice);
-      priceLine.classList.remove("positive", "negative", "neutral");
-      if (delta > 0) priceLine.classList.add("positive");
-      else if (delta < 0) priceLine.classList.add("negative");
-      else priceLine.classList.add("neutral");
-
-      deltaLine.innerHTML = `
-        <span class="${delta >= 0 ? 'positive' : delta < 0 ? 'negative' : 'neutral'}">
-          ${delta >= 0 ? "+" : ""}${delta.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%)
-        </span>
-      `;
-
-      const currentCandle = state.currentCandle || {
-        open: state.currentPrice,
-        high: state.currentPrice,
-        low: state.currentPrice,
-        close: state.currentPrice,
-        volume: 0
-      };
-
-      statOpen.textContent = formatPrice(currentCandle.open);
-      statHigh.textContent = formatPrice(currentCandle.high);
-      statLow.textContent = formatPrice(currentCandle.low);
-      statClose.textContent = formatPrice(currentCandle.close);
-      statVolume.textContent = Math.round(currentCandle.volume).toLocaleString();
-
-      marketStateEl.textContent = calculateMarketState();
-      const volatilityPct = computeVolumeVolatility();
-      volatilityValueEl.textContent = `${volatilityPct.toFixed(2)}%`;
-
-      const remaining = getCandleDuration() - (Date.now() - state.currentCandle.startTime);
-      timeLeftEl.textContent = formatTime(remaining);
-      timeframeValueEl.textContent = state.timeframe;
-    }
-
-    function priceToY(price, minPrice, maxPrice, chartHeight) {
-      const range = Math.max(0.0001, maxPrice - minPrice);
-      return state.panY + (chartHeight - ((price - minPrice) / range) * (chartHeight - state.padding.top - state.padding.bottom)) - state.padding.bottom;
-    }
-
-    function priceToX(candleIndex, totalCandles, chartWidth) {
-      const spacing = state.candleWidth + state.spaceBetweenCandles;
-      const totalWidth = totalCandles * spacing;
-      const startX = chartWidth - state.padding.right - totalWidth + state.panX;
-      return startX + candleIndex * spacing + state.candleWidth / 2;
-    }
-
-    function drawGrid(minPrice, maxPrice, chartHeight, chartWidth) {
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
-      ctx.lineWidth = 1;
-
-      // Horizontal grid lines with prices
-      for (let i = 0; i <= 5; i++) {
-        const price = maxPrice - ((maxPrice - minPrice) * i) / 5;
-        const y = state.padding.top + (i * (chartHeight - state.padding.top - state.padding.bottom)) / 5 + state.panY;
-        
-        if (y >= state.padding.top && y <= chartHeight - state.padding.bottom) {
-          ctx.beginPath();
-          ctx.moveTo(state.padding.left, y);
-          ctx.lineTo(chartWidth - state.padding.right, y);
-          ctx.stroke();
-
-          ctx.fillStyle = "rgba(184, 200, 225, 0.78)";
-          ctx.font = "12px Inter, sans-serif";
-          ctx.textAlign = "right";
-          ctx.fillText(formatPrice(price), state.padding.left - 10, y + 4);
-        }
-      }
-
-      // Y-axis line
-      ctx.strokeStyle = "rgba(255,255,255,0.12)";
-      ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(state.padding.left, state.padding.top);
-      ctx.lineTo(state.padding.left, chartHeight - state.padding.bottom);
-      ctx.stroke();
-
-      // X-axis line
-      ctx.beginPath();
-      ctx.moveTo(state.padding.left, chartHeight - state.padding.bottom);
-      ctx.lineTo(chartWidth - state.padding.right, chartHeight - state.padding.bottom);
-      ctx.stroke();
-    }
-
-    function drawCandle(x, yOpen, yClose, yHigh, yLow, w) {
-      const up = yClose <= yOpen;
-      
-      // Wick
-      ctx.beginPath();
-      ctx.moveTo(x, yHigh);
-      ctx.lineTo(x, yLow);
-      ctx.strokeStyle = up ? "rgba(107,232,146,0.9)" : "rgba(255,108,108,0.9)";
-      ctx.lineWidth = 1.3;
-      ctx.stroke();
-
-      // Body
-      const bodyTop = Math.min(yOpen, yClose);
-      const bodyBottom = Math.max(yOpen, yClose);
-      const bodyHeight = Math.max(2, bodyBottom - bodyTop);
-      
-      ctx.fillStyle = up ? "rgba(34,197,94,0.95)" : "rgba(239,68,68,0.95)";
-      ctx.strokeStyle = up ? "rgba(120,255,160,0.95)" : "rgba(255,127,127,0.95)";
+      ctx.moveTo(x, highY);
+      ctx.lineTo(x, lowY);
+      ctx.strokeStyle = up ? '#1ba978' : '#ea4c52';
       ctx.lineWidth = 1.1;
-      
-      ctx.fillRect(x - w / 2, bodyTop, w, bodyHeight);
-      ctx.strokeRect(x - w / 2, bodyTop, w, bodyHeight);
+      ctx.stroke();
+
+      const top = Math.min(openY, closeY);
+      const bodyH = Math.max(3, Math.abs(closeY - openY));
+      ctx.fillStyle = up ? '#1ba978' : '#ea4c52';
+      ctx.fillRect(x - w / 2, top, w, bodyH);
     }
 
-    function drawChart() {
-      const width = canvas.width;
-      const height = canvas.height;
-
+    function drawGridAndCandles() {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
       ctx.clearRect(0, 0, width, height);
-
-      // Chart background
-      ctx.fillStyle = "#0a1220";
+      ctx.fillStyle = '#f9f9f9';
       ctx.fillRect(0, 0, width, height);
 
-      const chartHeight = height - state.padding.top - state.padding.bottom;
-      const chartWidth = width - state.padding.left - state.padding.right;
+      const allCandles = [...chartData, ...(currentCandle ? [currentCandle] : [])];
+      if (!allCandles.length) return;
 
-      // Get all candles to display (history + current)
-      const allCandles = [...state.history];
-      if (state.currentCandle) {
-        allCandles.push(state.currentCandle);
-      }
-
-      if (allCandles.length === 0) return;
-
-      // Calculate price range from all candles
-      let minPrice = Infinity;
-      let maxPrice = -Infinity;
-
+      let min = Infinity;
+      let max = -Infinity;
       allCandles.forEach(c => {
-        minPrice = Math.min(minPrice, c.low);
-        maxPrice = Math.max(maxPrice, c.high);
+        min = Math.min(min, c.low);
+        max = Math.max(max, c.high);
       });
 
-      const pad = (maxPrice - minPrice) * 0.15 || 1.5;
-      minPrice -= pad;
-      maxPrice += pad;
+      const pad = (max - min) * 0.16 || 20;
+      min -= pad;
+      max += pad;
 
-      // Draw grid
-      drawGrid(minPrice, maxPrice, height, width);
+      const yScale = (v) => {
+        const range = max - min || 1;
+        return height - 16 - ((v - min) / range) * (height - 24);
+      };
 
-      // Draw candles
-      allCandles.forEach((candle, index) => {
-        const x = priceToX(index, allCandles.length, width);
-        
-        // Only draw if within chart bounds
-        if (x >= state.padding.left - state.candleWidth && x <= width) {
-          const yOpen = priceToY(candle.open, minPrice, maxPrice, height);
-          const yClose = priceToY(candle.close, minPrice, maxPrice, height);
-          const yHigh = priceToY(candle.high, minPrice, maxPrice, height);
-          const yLow = priceToY(candle.low, minPrice, maxPrice, height);
-          
-          drawCandle(x, yOpen, yClose, yHigh, yLow, state.candleWidth * state.zoom);
-        }
-      });
+      const left = 20;
+      const right = 10;
+      const candleCount = Math.max(40, allCandles.length);
+      const candleWidth = 5.8;
 
-      // Draw current price line
-      if (state.currentCandle) {
-        const currentY = priceToY(state.currentPrice, minPrice, maxPrice, height);
-        ctx.strokeStyle = "rgba(96,165,250,0.6)";
-        ctx.setLineDash([8, 8]);
-        ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 7; i++) {
+        const y = 8 + (i * (height - 24)) / 7;
         ctx.beginPath();
-        ctx.moveTo(state.padding.left, currentY);
-        ctx.lineTo(width - state.padding.right, currentY);
+        ctx.moveTo(left, y);
+        ctx.lineTo(width - right, y);
         ctx.stroke();
-        ctx.setLineDash([]);
       }
 
-      // Draw annotations
-      state.annotations.forEach((annotation) => {
-        const y = annotation.y;
-        const x = annotation.x;
-
-        if (x >= state.padding.left && x <= width - state.padding.right && 
-            y >= state.padding.top && y <= height - state.padding.bottom) {
-          ctx.save();
-          ctx.strokeStyle = "rgba(251,191,36,0.9)";
-          ctx.lineWidth = 1.2;
-          ctx.setLineDash([6, 5]);
-          ctx.beginPath();
-          ctx.moveTo(x, y);
-          ctx.lineTo(x, height - state.padding.bottom);
-          ctx.stroke();
-          ctx.setLineDash([]);
-
-          ctx.fillStyle = "rgba(251,191,36,0.18)";
-          ctx.fillRect(x + 10, y - 18, 140, 24);
-
-          ctx.fillStyle = "#fef3c7";
-          ctx.font = "bold 12px Inter, sans-serif";
-          ctx.textAlign = "left";
-          ctx.fillText(annotation.text.substring(0, 18), x + 14, y + 1);
-
-          ctx.restore();
-        }
-      });
-    }
-
-    function resizeCanvas() {
-      const rect = canvas.parentElement.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-    }
-
-    function animationLoop(now) {
-      const delta = now - state.lastTick;
-      state.lastTick = now;
-
-      if (state.playing) {
-        tickMarket(delta);
+      for (let i = 0; i <= 15; i++) {
+        const x = left + (i * (width - left - right)) / 15;
+        ctx.beginPath();
+        ctx.moveTo(x, 8);
+        ctx.lineTo(x, height - 10);
+        ctx.stroke();
       }
 
-      renderHud();
-      drawChart();
-
-      requestAnimationFrame(animationLoop);
+      const lastX = width - 20;
+      let xPos = lastX;
+      for (let i = allCandles.length - 1; i >= 0; i--) {
+        const candle = allCandles[i];
+        const up = candle.close >= candle.open;
+        drawCandle(candle, xPos, yScale, candleWidth, up);
+        xPos -= 8;
+      }
     }
 
-    function attachEvents() {
-      // Timeframe buttons
-      document.querySelectorAll(".tf-btn").forEach(button => {
-        button.addEventListener("click", () => {
-          state.timeframe = button.dataset.tf;
-          document.querySelectorAll(".tf-btn").forEach(btn => btn.classList.toggle("active", btn === button));
-          resetChartForTimeframe();
-        });
-      });
-
-      // Play/Pause button
-      document.getElementById("pauseBtn").addEventListener("click", function () {
-        state.playing = !state.playing;
-        this.textContent = state.playing ? "Pause" : "Resume";
-        this.classList.toggle("primary", state.playing);
-      });
-
-      // Annotate button
-      document.getElementById("annotateBtn").addEventListener("click", () => {
-        state.annotationMode = !state.annotationMode;
-        const btn = document.getElementById("annotateBtn");
-        btn.textContent = state.annotationMode ? "Annotating..." : "Annotate";
-        canvas.style.cursor = state.annotationMode ? "crosshair" : "grab";
-      });
-
-      // Reset view button
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        state.panX = 0;
-        state.panY = 0;
-        state.zoom = 1.0;
-      });
-
-      // Canvas mouse events for panning and annotation
-      canvas.addEventListener("mousedown", (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        if (state.annotationMode) {
-          // Annotation mode - clicking adds an annotation
-          const label = prompt("Annotation label:", `Price: ${state.currentPrice.toFixed(2)}`);
-          if (label) {
-            state.annotations.push({ x, y, text: label });
-          }
-        } else {
-          // Pan mode - dragging pans the chart
-          state.isDragging = true;
-          state.dragStartX = e.clientX;
-          state.dragStartY = e.clientY;
-          state.startPanX = state.panX;
-          state.startPanY = state.panY;
-          canvas.style.cursor = "grabbing";
-        }
-      });
-
-      document.addEventListener("mousemove", (e) => {
-        if (!state.isDragging || state.annotationMode) return;
-
-        const deltaX = e.clientX - state.dragStartX;
-        const deltaY = e.clientY - state.dragStartY;
-
-        state.panX = state.startPanX + deltaX;
-        state.panY = state.startPanY + deltaY;
-      });
-
-      document.addEventListener("mouseup", () => {
-        state.isDragging = false;
-        if (!state.annotationMode) {
-          canvas.style.cursor = "grab";
-        }
-      });
-
-      // Zoom with mouse wheel
-      canvas.addEventListener("wheel", (e) => {
-        e.preventDefault();
-        const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-        state.zoom = clamp(state.zoom * zoomFactor, 0.5, 3);
-      });
-
-      window.addEventListener("resize", resizeCanvas);
+    function animate() {
+      randomWalk();
+      drawGridAndCandles();
+      requestAnimationFrame(animate);
     }
 
     function init() {
+      chartData = seedCandles();
+      setCurrentCandle();
       resizeCanvas();
-      resetChartForTimeframe();
-      attachEvents();
-      requestAnimationFrame(animationLoop);
+      window.addEventListener('resize', resizeCanvas);
+      animate();
     }
 
     init();
